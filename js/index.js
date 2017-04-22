@@ -32,25 +32,30 @@ function Clock(id,offset,label){
 		label = label || '';
 		var d = new Date();
 		this.offset =(offset+ d.getTimezoneOffset())*60*1000;
+		this.id = id;
+		this.label = label;
 		 
-		this.updateClock = function(){
-			var date = new Date();
-				date = new Date((offset+ d.getTimezoneOffset())*60*1000 + date.getTime());
-			var clock = document.getElementById(id);
-			clock.innerHTML = this.formatDigits(date.getHours()) + ":" + this.formatDigits(date.getMinutes()) +":"+ this.formatDigits(date.getSeconds()) +" "+ label ;
-		};
-
-		this.formatDigits= function(val){
-			if(val<10) val = "0" + val;
-
-			return val;
-		};
+		
 
 	var that = this;
 	setInterval(function(){
 		that.updateClock();},1000);
 	this.updateClock();
 }
+
+
+Clock.prototype.updateClock = function(){
+			var date  = new Date();
+				 date = new Date(this.offset + date.getTime());
+			var clock = document.getElementById(this.id);
+			clock.innerHTML = this.formatDigits(date.getHours()) + ":" + this.formatDigits(date.getMinutes()) +":"+ this.formatDigits(date.getSeconds()) +" "+ this.label ;
+		};
+
+Clock.prototype.formatDigits= function(val){
+			if(val<10) val = "0" + val;
+
+			return val;
+		};
 
 
 window.onload = onReady;
